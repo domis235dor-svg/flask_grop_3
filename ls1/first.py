@@ -1,2 +1,0 @@
-print("hjha")
-print ("lingwa")
