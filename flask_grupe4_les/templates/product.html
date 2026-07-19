@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products</title>
+</head>
+<body>
+  <h1>Product manager</h1>
+
+{% with messages = get_flashed_messages() %}
+{% for msg in messages %} <p>{{ msg }}</p>
+{% endfor %}
+{% endwith %}
+
+
+
+  <h3>Add product:</h3>
+
+  <form method="POST" action="{{ url_for('products') }}">
+    <input name="title" type="text" placeholder="Title">
+    <input name="price" type="number" step="0.01" placeholder="Price">
+    <input name="category" type="text" placeholder="Category">
+    <button type="submit">Add</button>
+  </form>
+
+>
+
+{% if edit_product_data %}
+
+  <h3>Edit product: {{ edit_product_data.name }}</h3>
+
+  <form method="POST" action="{{ url_for('edit', name_product=edit_product_data.name) }}">
+    <input name="price"
+           type="number"
+           step="0.01"
+           value="{{ edit_product_data.price }}">
+
+
+<input name="category"
+       type="text"
+       value="{{ edit_product_data.category }}">
+
+<button type="submit">Save</button>
+
+
+  </form>
+  {% endif %}
+
+
+
+  <h3>Filter:</h3>
+
+  <form method="GET">
+    <select name="category">
+      <option value="all" {% if choose_category=="all" %} selected {% endif %}>All</option>
+
+
+  {% for category in categories %}
+    <option value="{{ category }}" {% if choose_category==category %} selected {% endif %}>
+      {{ category }}
+    </option>
+  {% endfor %}
+</select>
+
+<button type="submit">Submit</button>
+
+
+  </form>
+
+
+
+  <h3>Products:</h3>
+
+  <table border="1" cellpadding="5">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+<tbody>
+  {% for product in products %}
+  <tr>
+    <td>{{ product.name }}</td>
+    <td>{{ product.price }}</td>
+    <td>{{ product.category }}</td>
+
+    <td>
+      <a href="{{ url_for('edit', name_product=product.name) }}">
+        <button type="button">Edit</button>
+      </a>
+
+      <a href="{{ url_for('delete', name_product=product.name) }}">
+        <button type="button">Delete</button>
+      </a>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+
+  </table>
+
+</body>
+</html>
