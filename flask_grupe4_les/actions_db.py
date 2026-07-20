@@ -1,9 +1,10 @@
 from models import Product
 
-#create'''
+'''create'''
 def add_product(name: str, price: float, category: str):
     Product.create(name=name, price=price, category=category)
 
+'''read'''
 
 def get_categories():
     products = Product.select(Product.category).distinct().order_by(Product.category)
@@ -19,13 +20,12 @@ def get_products_by_category(category: str):
 def product_exists(name: str) -> bool:
     return Product.select().where(Product.name == name).exists()
 
-#update'''
-def edit_product(name: str, price: float, category: str):
-    Product.update(
-        price=price,
-        category=category
-    ).where(Product.name == name).execute()
 
-#delete'''
-def delete_product(name: str):
-    Product.delete().where(Product.name == name).execute()
+'''update'''
+def edit_product():
+    pass
+
+
+'''delete'''
+def delete_product():
+    pass
