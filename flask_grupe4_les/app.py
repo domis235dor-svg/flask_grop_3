@@ -5,7 +5,6 @@ from actions_db import *
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 
-# підключення до БД
 init_db()
 
 
@@ -27,16 +26,13 @@ def products():
 
         return redirect(url_for('products'))
 
-    # актуальні категорії на основі товарів
     all_categories = get_categories()
 
-    # обрана категорія
     choose_category = request.args.get('category', 'all')
 
     if choose_category == 'all':
         filter_products = get_products()
     else:
-        # фільтрація
         filter_products = get_products_by_category(choose_category)
 
     return render_template('product.html',
@@ -45,9 +41,28 @@ def products():
                            choose_category=choose_category)
 
 
-# динамічне посилання з параметрами <>
+@app.route('/edit/<name_product>', methods=['GET', 'POST'])
+def edit(name_product):
+    product = get_product_by_name(name_product)
+
+    if not product:
+        flash(f'Product {name_product} not found!', category='error')
+        return redirect(url_for('products'))
+
+    if request.method == 'POST':
+        price = float(request.form.get('price'))
+        category = request.form.get('category')
+
+        edit_product(name_product, price, category)
+        flash('Відредаговано!', category='success')
+        return redirect(url_for('edit', name_product=name_product))
+
+    return render_template('edit_product.html', product=product)
+
+
 @app.route('/delete/<name_product>')
 def delete(name_product):
+    delete_product(name_product)
     flash(f'Product {name_product} was deleted!', category='success')
 
     return redirect(url_for('products'))
