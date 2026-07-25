@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Shared Code</h1>
+
+{% for post in posts %}
+
+<div class="post-card">
+
+    <div class="post-header">
+        <h2>{{ post.title }}</h2>
+    </div>
+
+    <div class="meta">
+        by {{ post.user.username }} • {{ post.created_at.strftime('%d.%m.%Y %H:%M') }}
+    </div>
+
+    <p class="post-description">
+        {{ post.description }}
+    </p>
+
+    {% if post.image %}
+<img class="post-img"
+     src="{{ url_for('static', filename='image/posts/' + post.image) }}"
+     alt="{{ post.title }}">
+{% endif %}
+
+    <div class="code-container">
+
+        <div class="code-header">
+            <span>💻 Source Code</span>
+
+            <button class="copy-btn" onclick="copyCode('code-{{ post.id }}')">
+                📋 Copy
+            </button>
+        </div>
+
+        <pre><code id="code-{{ post.id }}">{{ post.code }}</code></pre>
+
+    </div>
+
+    <div class="comments-section">
+
+        <h4>💬 YOURS Comments 💬</h4>
+
+        <form method="POST"
+              action="{{ url_for('add_comment', post_id=post.id) }}"
+              class="comment-form">
+
+            <input type="text"
+                   name="text"
+                   placeholder="Write a comment..."
+                   required>
+
+            <button type="submit">Send 📩</button>
+
+        </form>
+
+        <div class="comments-list">
+
+            {% for comment in post.comments %}
+
+            <div class="comment-card">
+
+                <div class="comment-header">
+
+                    <div class="comment-user">
+                        <strong>{{ comment.user.username }}</strong>
+                        <span>{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                    </div>
+
+                    {% if current_user.is_authenticated and (current_user.id == comment.user.id or current_user.id == post.user.id) %}
+                    <a href="{{ url_for('delete_comment_page', comment_id=comment.id) }}"
+                       class="delete-comment-btn"
+                       onclick="return confirm('Delete this comment?')">
+                        🗑️
+                    </a>
+                    {% endif %}
+
+                </div>
+
+                <p>{{ comment.text }}</p>
+
+            </div>
+
+            {% else %}
+
+            <p class="no-comments">No comments yet.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<p>No code published yet.</p>
+
+{% endfor %}
+
+{% endblock %}

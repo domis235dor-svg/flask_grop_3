@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from models import init_db
-from actions_db import *
+from progect.models import init_db
+from progect.actions_db import *
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'

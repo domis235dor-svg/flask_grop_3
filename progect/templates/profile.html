@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="profile-page">
+
+
+<div class="profile-card">
+
+    {% if user.avatar %}
+        <img src="{{ url_for('static', filename='image/avatars/' + user.avatar) }}" class="profile-avatar">
+    {% else %}
+        <div class="profile-avatar placeholder"></div>
+    {% endif %}
+
+    <h1>{{ user.username }}</h1>
+
+    <p class="profile-email">{{ user.email }}</p>
+
+    {% if user.bio %}
+        <div class="profile-bio">
+            {{ user.bio }}
+        </div>
+    {% else %}
+        <div class="profile-bio empty">
+            This developer has not written a bio yet.
+        </div>
+    {% endif %}
+
+    <a href="{{ url_for('edit_profile') }}" class="edit-profile-btn">
+        ✏️ Edit Profile
+    </a>
+
+</div>
+
+
+</div>
+
+{% endblock %}

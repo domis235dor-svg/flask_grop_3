@@ -1,4 +1,4 @@
-from models import Product
+from progect.models import Product
 
 def add_product(name: str, price: float, category: str):
     Product.create(name=name, price=price, category=category)

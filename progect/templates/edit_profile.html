@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="edit-profile-page">
+
+
+<div class="edit-profile-card">
+
+    <h1>🐰 Edit Profile</h1>
+    <p class="subtitle">Make your RABIIT profile unique.</p>
+
+    <form method="POST" enctype="multipart/form-data" class="form">
+
+        <label>Profile Picture</label>
+        <input type="file" name="avatar" accept="image/*">
+
+        <label>Username</label>
+        <input type="text" name="username" value="{{ current_user.username }}" required>
+
+        <label>About You</label>
+        <textarea name="bio" rows="5" placeholder="Tell people about yourself, what you build, your favorite technologies, or anything you want the community to know.">{{ current_user.bio }}</textarea>
+
+        <button type="submit">💾 Save Profile</button>
+
+    </form>
+
+</div>
+
+
+</div>
+
+{% endblock %}
